@@ -43,10 +43,13 @@ async function run() {
       const {id}=req.params
       // console.log(id);
       const result=await petsuppliessCollection.findOne({_id: new ObjectId(id)})
-      res.send(
-        
-        result
-      )
+      res.send(result)
+                     
+    })
+
+    app.get('/latest-post',async(req,res)=>{
+      const result=await petsuppliessCollection.find().sort({date:-1}).limit(6).toArray()
+      res.send(result)
     })
 
 
