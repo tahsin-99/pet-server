@@ -42,7 +42,7 @@ async function run() {
     app.get('/petsupplies/:id',async(req,res)=>{
       const {id}=req.params
       // console.log(id);
-      const result=await petsuppliessCollection.findOne({_id: new ObjectId(id)}).toArray
+      const result=await petsuppliessCollection.findOne({_id: new ObjectId(id)})
       res.send(
         
         result
