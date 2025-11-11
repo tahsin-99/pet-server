@@ -32,6 +32,13 @@ async function run() {
       res.send(result)
     })
 
+    app.post('/petsupplies',async(req,res)=>{
+
+      const data=req.body
+      console.log(data);
+      const result= petsuppliessCollection.insertOne()
+      res.send('done')
+    })
 
 
     await client.db("admin").command({ ping: 1 });
