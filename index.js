@@ -51,6 +51,10 @@ async function run() {
       const result=await petsuppliessCollection.find().sort({date:-1}).limit(6).toArray()
       res.send(result)
     })
+    app.get('/pets',async(req,res)=>{
+      const result=await petsuppliessCollection.find({category:"Pets"}).toArray()
+      res.send(result)
+    })
 
 
     await client.db("admin").command({ ping: 1 });
