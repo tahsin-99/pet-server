@@ -63,6 +63,10 @@ async function run() {
       const result=await petsuppliessCollection.find({category:"Accessories"}).toArray()
       res.send(result)
     })
+    app.get('/petsproducts',async(req,res)=>{
+      const result=await petsuppliessCollection.find({category:"Pet Care Products"}).toArray()
+      res.send(result)
+    })
 
 
     await client.db("admin").command({ ping: 1 });
