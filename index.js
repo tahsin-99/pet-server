@@ -2,8 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const admin = require("firebase-admin");
-require("dotenv").config()
-const serviceAccount = require("./pet sdk key.json");
+require("dotenv").config();
+const serviceAccount = require("./pet-key.json");
 const app = express();
 const port = 3000;
 app.use(cors());
@@ -13,8 +13,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-const uri =
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@t-mongo.m4mnwdk.mongodb.net/?appName=T-mongo`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@t-mongo.m4mnwdk.mongodb.net/?appName=T-mongo`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -47,11 +46,12 @@ const verifyToken = async (req, res, next) => {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     const db = client.db("pets-db");
     const petsuppliessCollection = db.collection("pet-supplies");
     const ordercollection = db.collection("my-orders");
+    const contactCollection = db.collection("contacts");
 
     app.get("/petsupplies", async (req, res) => {
       const result = await petsuppliessCollection.find().toArray();
@@ -64,7 +64,7 @@ async function run() {
       const result = await petsuppliessCollection.insertOne(data);
       res.send(result);
     });
-    app.get("/petsupplies/:id", verifyToken, async (req, res) => {
+    app.get("/petsupplies/:id", async (req, res) => {
       const { id } = req.params;
       // console.log(id);
       const result = await petsuppliessCollection.findOne({
@@ -158,6 +158,12 @@ async function run() {
       const { id } = req.params;
 
       const result = await ordercollection.deleteOne({ _id: new ObjectId(id) });
+      res.send(result);
+    });
+
+    app.post("/contacts", async (req, res) => {
+      const data = req.body;
+      const result = await contactCollection.insertOne(data);
       res.send(result);
     });
 
